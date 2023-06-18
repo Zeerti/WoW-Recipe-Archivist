@@ -29,7 +29,8 @@ CREATE TABLE character (
 
 CREATE TABLE recipe (
   recipe_id INTEGER PRIMARY KEY,
-  recipe_name VARCHAR NOT NULL
+  recipe_name VARCHAR NOT NULL,
+  recipe_link VARCHAR NOT NULL
 );
 
 CREATE TABLE character_recipe (
