@@ -39,13 +39,3 @@ CREATE TABLE character_recipe (
   FOREIGN KEY(character_id) REFERENCES character(character_id),
   FOREIGN KEY(recipe_id) REFERENCES recipe(recipe_id)
 );
-
-INSERT INTO profession (profession_id, profession_name) VALUES
-  (755, 'jewelcrafting'),
-  (164, 'blacksmithing'),
-  (165, 'leatherworking'),
-  (197, 'tailoring'),
-  (333, 'enchanting'),
-  (202, 'engineering'),
-  (171, 'alchemy'),
-  (773, 'inscription');
