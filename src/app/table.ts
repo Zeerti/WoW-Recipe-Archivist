@@ -28,13 +28,17 @@ tableHandler.once("finish", async (pathList) => {
     })
   )
 
-  return Promise.all(
+  const newTables = await Promise.all(
     tables
       .sort((a, b) => {
         return (b.options.priority ?? 0) - (a.options.priority ?? 0)
       })
       .map((table) => table.make())
   )
+  for (let table of newTables) {
+    table.doPostSetup()
+  }
+  return newTables
 })
 
 export interface TableOptions<Type extends {}> {
@@ -43,6 +47,7 @@ export interface TableOptions<Type extends {}> {
   priority?: number
   migrations?: { [version: number]: (table: Knex.CreateTableBuilder) => void }
   setup: (table: Knex.CreateTableBuilder) => void
+  postSetup?: (query: Knex.QueryBuilder<Type>) => void
   /**
    * This property is automatically setup on bot running.
    * @deprecated
@@ -57,6 +62,18 @@ export class Table<Type extends {}> {
 
   get query() {
     return database.db<Type>(this.options.name)
+  }
+
+  doPostSetup(): void {
+    if (!this.options.postSetup) {
+      return
+    }
+    this.options.postSetup(this.query)
+    logger.log(
+      `ran postSetup on table ${chalk.blueBright(this.options.name)}${
+        this.options.native ? ` ${chalk.green("native")}` : ""
+      } ${chalk.grey(this.options.description)}`
+    )
   }
 
   async make(): Promise<this> {

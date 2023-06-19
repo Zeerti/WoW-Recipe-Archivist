@@ -15,10 +15,6 @@
     "update": "gulp update",
     "test": "tsc --noEmit && npm run start.test"
   },
-  "prettier": {
-    "semi": false,
-    "endOfLine": "crlf"
-  },
   "license": "ISC",
   "repository": {
     "type": "git",
