@@ -7,5 +7,5 @@ export default new app.Command({
   async run(message) {
     // todo: code here
     return message.send("This is a command to create something!")
-  }
+  },
 })
