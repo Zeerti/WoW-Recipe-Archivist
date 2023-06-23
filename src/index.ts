@@ -1,10 +1,9 @@
 import { filename } from "dirname-filename-esm"
-
 import * as logger from "./app/logger.js"
+import "dotenv/config.js"
+import { slashHandler } from "./app/slash.js"
 
 const __filename = filename(import.meta)
-
-import "dotenv/config.js"
 
 for (const key of ["BOT_TOKEN", "BOT_PREFIX"]) {
   if (!process.env[key] || /^{{.+}}$/.test(process.env[key] as string)) {
@@ -24,6 +23,7 @@ client.login(process.env.BOT_TOKEN).catch((err) => {
 try {
   await app.tableHandler.load()
   await app.commandHandler.load()
+  await slashHandler.load()
   await app.listenerHandler.load()
 } catch (error: any) {
   app.error(error, __filename, true)
