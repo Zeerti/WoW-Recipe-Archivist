@@ -6,7 +6,7 @@
 
 /dist
 /temp
-/data
+/data/sqlite3.db
 
 # node
 
