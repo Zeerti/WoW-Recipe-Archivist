@@ -253,7 +253,7 @@ export function formatEmbedText(
   return (input ?? "").slice(0, embedLimits[limit]) || spaceChar
 }
 
-export class SafeMessageEmbed extends discord.MessageEmbed {
+export class SafeMessageEmbed extends discord.EmbedBuilder {
   setDescription(description: string): this {
     super.setDescription(formatEmbedText(description, "description"))
 
