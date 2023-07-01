@@ -1,4 +1,4 @@
-import discord from "discord.js"
+import discord, { ChannelType } from "discord.js"
 import yargsParser from "yargs-parser"
 import regexParser from "regex-parser"
 
@@ -16,7 +16,7 @@ export interface Rest<Message extends command.NormalMessage> extends Argument {
   required?: core.Scrap<boolean, [message?: Message]>
   default?: core.Scrap<string, [message?: Message]>
   all?: boolean
-  missingErrorMessage?: string | discord.MessageEmbed
+  missingErrorMessage?: string | discord.EmbedBuilder
 }
 
 export interface Option<Message extends command.NormalMessage>
@@ -51,9 +51,9 @@ export interface Option<Message extends command.NormalMessage>
     [value: any, message?: Message]
   >
   castingDescription?: core.Scrap<string, [value: string, message?: Message]>
-  checkingErrorMessage?: string | discord.MessageEmbed
-  castingErrorMessage?: string | discord.MessageEmbed
-  missingErrorMessage?: string | discord.MessageEmbed
+  checkingErrorMessage?: string | discord.EmbedBuilder
+  castingErrorMessage?: string | discord.EmbedBuilder
+  missingErrorMessage?: string | discord.EmbedBuilder
 }
 
 export type Positional<Message extends command.NormalMessage> = Omit<
@@ -107,14 +107,14 @@ export async function checkValue<Message extends command.NormalMessage>(
   subjectType: "positional" | "argument",
   value: string,
   message: Message
-): Promise<discord.MessageEmbed | true> {
+): Promise<discord.EmbedBuilder | true> {
   const client = getClient()
 
   if (!subject.checkValue) return true
 
   const errorEmbed = (
-    defaultErrorEmbed: () => discord.MessageEmbed
-  ): discord.MessageEmbed => {
+    defaultErrorEmbed: () => discord.EmbedBuilder
+  ): discord.EmbedBuilder => {
     if (typeof subject.checkingErrorMessage === "string") {
       return defaultErrorEmbed().setDescription(subject.checkingErrorMessage)
     } else if (subject.checkingErrorMessage) {
@@ -128,7 +128,7 @@ export async function checkValue<Message extends command.NormalMessage>(
 
       return errorEmbed(() =>
         new core.SafeMessageEmbed()
-          .setColor("RED")
+          .setColor("Red")
           .setAuthor({
             name: `Bad ${subjectType} pattern "${subject.name}".`,
             iconURL: message.client.user?.displayAvatarURL(),
@@ -147,7 +147,7 @@ export async function checkValue<Message extends command.NormalMessage>(
   if (typeof checkResult === "string") {
     return errorEmbed(() =>
       new core.SafeMessageEmbed()
-        .setColor("RED")
+        .setColor("Red")
         .setAuthor({
           name: `Bad ${subjectType} tested "${subject.name}".`,
           iconURL: message.client.user?.displayAvatarURL(),
@@ -160,7 +160,7 @@ export async function checkValue<Message extends command.NormalMessage>(
     if (!checkResult) {
       return errorEmbed(() =>
         new core.SafeMessageEmbed()
-          .setColor("RED")
+          .setColor("Red")
           .setAuthor({
             name: `Bad ${subjectType} tested "${subject.name}".`,
             iconURL: message.client.user?.displayAvatarURL(),
@@ -185,7 +185,7 @@ export async function checkValue<Message extends command.NormalMessage>(
   if (!checkResult.test(value)) {
     return errorEmbed(() =>
       new core.SafeMessageEmbed()
-        .setColor("RED")
+        .setColor("Red")
         .setAuthor({
           name: `Bad ${subjectType} pattern "${subject.name}".`,
           iconURL: message.client.user?.displayAvatarURL(),
@@ -204,7 +204,7 @@ export async function checkCastedValue<Message extends command.NormalMessage>(
   subjectType: "positional" | "argument",
   castedValue: any,
   message: Message
-): Promise<discord.MessageEmbed | true> {
+): Promise<discord.EmbedBuilder | true> {
   if (!subject.checkCastedValue) return true
 
   const checkResult: string | boolean = await core.scrap(
@@ -213,9 +213,9 @@ export async function checkCastedValue<Message extends command.NormalMessage>(
     message
   )
 
-  const errorEmbed = (errorMessage: string): discord.MessageEmbed => {
+  const errorEmbed = (errorMessage: string): discord.EmbedBuilder => {
     const embed = new core.SafeMessageEmbed()
-      .setColor("RED")
+      .setColor("Red")
       .setAuthor({
         name: `Bad ${subjectType} tested "${subject.name}".`,
         iconURL: message.client.user?.displayAvatarURL(),
@@ -255,7 +255,7 @@ export async function castValue<Message extends command.NormalMessage>(
   baseValue: string | undefined,
   message: Message,
   setValue: (value: any) => unknown
-): Promise<discord.MessageEmbed | true> {
+): Promise<discord.EmbedBuilder | true> {
   const empty = new Error("The value is empty!")
 
   const cast = async () => {
@@ -303,13 +303,13 @@ export async function castValue<Message extends command.NormalMessage>(
             if (channel) setValue(channel)
             else throw new Error("Unknown channel!")
           } else {
-            const search = (channel: discord.AnyChannel) => {
+            const search = (channel: discord.Channel) => {
               return (
                 "name" in channel && // @ts-ignore
                 channel.name.toLowerCase().includes(baseValue.toLowerCase())
               )
             }
-            let channel: discord.AnyChannel | undefined
+            let channel: discord.Channel | undefined
             if (command.isGuildMessage(message))
               channel = message.guild.channels.cache.find(search)
             channel ??= message.client.channels.cache.find(search)
@@ -362,12 +362,15 @@ export async function castValue<Message extends command.NormalMessage>(
             const [, channelID, messageID] = match
             const channel = message.client.channels.cache.get(channelID)
             if (channel) {
-              if (channel.isText()) {
+              if (channel.type === ChannelType.GuildText) {
                 setValue(
-                  await channel.messages.fetch(messageID, {
-                    force: false,
-                    cache: false,
-                  })
+                  await channel.messages.fetch(messageID 
+                    // TODO what was this, is it still needed?
+                  //   {
+                  //   force: false,
+                  //   cache: false,
+                  // }
+                  )
                 )
               } else throw new Error("Invalid channel type!")
             } else throw new Error("Unknown channel!")
@@ -471,7 +474,7 @@ export async function castValue<Message extends command.NormalMessage>(
     if (subject.castingErrorMessage) {
       if (typeof subject.castingErrorMessage === "string") {
         return new core.SafeMessageEmbed()
-          .setColor("RED")
+          .setColor("Red")
           .setAuthor({
             name: `Bad ${subjectType} type "${subject.name}".`,
             iconURL: message.client.user?.displayAvatarURL(),
@@ -485,7 +488,7 @@ export async function castValue<Message extends command.NormalMessage>(
     }
 
     return new core.SafeMessageEmbed()
-      .setColor("RED")
+      .setColor("Red")
       .setAuthor({
         name: `Bad ${subjectType} type "${subject.name}".`,
         iconURL: message.client.user?.displayAvatarURL(),

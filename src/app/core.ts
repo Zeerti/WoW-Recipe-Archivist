@@ -7,7 +7,7 @@ import utc from "dayjs/plugin/utc.js"
 import relative from "dayjs/plugin/relativeTime.js"
 import timezone from "dayjs/plugin/timezone.js"
 import toObject from "dayjs/plugin/toObject.js"
-import discord from "discord.js"
+import discord, { EmbedField } from "discord.js"
 import EventEmitter from "events"
 import * as prettier from "prettier"
 
@@ -179,7 +179,7 @@ export function forceTextSize(
 }
 
 export interface EventEmitters {
-  message:
+  messageCreate:
     | discord.TextBasedChannel
     | discord.User
     | discord.GuildMember
@@ -188,9 +188,7 @@ export interface EventEmitters {
 
 export const messageEmitter = new EventEmitter()
 
-export function onceMessage<
-  Event extends keyof Pick<discord.ClientEvents, keyof EventEmitters>
->(
+export function onceMessage<Event extends keyof Pick<discord.ClientEvents, keyof EventEmitters>>(
   emitter: EventEmitters[Event],
   cb: (...args: discord.ClientEvents[Event]) => unknown
 ) {
@@ -254,11 +252,6 @@ export function formatEmbedText(
 }
 
 export class SafeMessageEmbed extends discord.EmbedBuilder {
-  setDescription(description: string): this {
-    super.setDescription(formatEmbedText(description, "description"))
-
-    return this
-  }
 
   public setFooter(options: discord.EmbedFooterData | null): this
   public setFooter(text: string, iconURL?: string): this
@@ -283,11 +276,18 @@ export class SafeMessageEmbed extends discord.EmbedBuilder {
     return this
   }
 
-  setColor(color: discord.ColorResolvable = "BLURPLE"): this {
-    super.setColor(color)
+  setColor(color: discord.ColorResolvable | null = "Blurple"): this {
+  super.setColor(color)
 
-    return this
-  }
+  return this
+}
+
+
+  // setColor(color: discord.ColorResolvable = "Blurple"): this {
+  //   super.setColor(color)
+
+  //   return this
+  // }
 
   setTitle(title: string): this {
     super.setTitle(formatEmbedText(title, "title"))
@@ -320,32 +320,23 @@ export class SafeMessageEmbed extends discord.EmbedBuilder {
     return this
   }
 
-  setFields(...fields: discord.EmbedFieldData[]): this {
+  setFields(...fields: discord.EmbedField[]): this {
     super.setFields([])
     this.addFields(...fields)
 
     return this
   }
 
-  addFields(...fields: discord.EmbedFieldData[]): this {
-    fields.slice(0, embedLimits.fields - this.fields.length).map((field) =>
-      super.addFields({
-        name: field.name,
-        value: field.value,
-        inline: field.inline,
-      })
-    )
+  setDescription(description: string): this {
+    super.setDescription(formatEmbedText(description, "description"))
+
+    return this
+  }
+  
+  public addFields(...fields: discord.EmbedField[]): this {
+      super.addFields([...fields])
 
     return this
   }
 
-  addField(name: string, value: string, inline?: boolean): this {
-    super.addField(
-      formatEmbedText(name, "field.name"),
-      formatEmbedText(value, "field.value"),
-      inline
-    )
-
-    return this
-  }
 }

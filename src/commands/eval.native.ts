@@ -99,7 +99,7 @@ export default new app.Command({
       )
     } else {
       const embed = new app.SafeMessageEmbed()
-        .setColor(evaluated.failed ? "RED" : "BLURPLE")
+        .setColor(evaluated.failed ? "Red" : "Blurple")
         .setTitle(
           `${evaluated.failed ? "\\❌" : "\\✔"} Result of JS evaluation ${
             evaluated.failed ? "(failed)" : ""
@@ -115,13 +115,14 @@ export default new app.Command({
         )
 
       if (message.args.information)
-        embed.addField(
-          "Information",
-          app.code.stringify({
+        embed.addFields({
+          name: "Information",
+          value: app.code.stringify({
             content: `type: ${evaluated.type}\nclass: ${evaluated.class}\nduration: ${evaluated.duration}ms`,
             lang: "yaml",
-          })
-        )
+          }),
+          inline: true // TODO: is this true or false?
+        })
       await message.channel.send({ embeds: [embed] })
     }
 

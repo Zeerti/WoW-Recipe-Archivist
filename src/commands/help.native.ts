@@ -23,7 +23,7 @@ export default new app.Command({
         await message.channel.send({
           embeds: [
             new core.SafeMessageEmbed()
-              .setColor("RED")
+              .setColor("Red")
               .setAuthor(
                 `Unknown command "${message.args.command}"`,
                 message.client.user?.displayAvatarURL()

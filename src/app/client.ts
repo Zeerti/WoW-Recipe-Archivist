@@ -1,12 +1,17 @@
+import discord, { Client, GatewayIntentBits } from "discord.js"
 
-import { Client, Intents } from 'discord.js';
+export const client = new discord.Client({
+  intents: process.env.BOT_INTENTS
+    ? process.env.BOT_INTENTS.split(/[;|.,\s+]+/).map(
+        (intent) => GatewayIntentBits[intent as keyof typeof GatewayIntentBits]
+      )
+    : [],
+})
 
-const botIntents = process.env.BOT_INTENTS?.split(/[;|.,\s+]+/);
-const intents = botIntents
-  ? botIntents.map((intent) => {
-      const intentName = intent.toUpperCase();
-      return Intents.FLAGS[intentName as keyof typeof Intents.FLAGS];
-    })
-  : [];
+export function getClient() {
+  if (!client.isReady()) throw new Error("The Discord client is not yet ready.")
 
-export const client = new Client({ intents });
+  return client
+}
+
+export default client
