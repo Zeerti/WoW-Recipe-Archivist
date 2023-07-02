@@ -537,6 +537,7 @@ export async function prepareCommand<Type extends keyof CommandMessageType>(
 
         if (!given) {
           if (await core.scrap(positional.required, message)) {
+            logger.log(`${await core.scrap(positional.required, message)}`);
             if (positional.missingErrorMessage) {
               if (typeof positional.missingErrorMessage === "string") {
                 return new core.SafeMessageEmbed()
@@ -547,7 +548,10 @@ export async function prepareCommand<Type extends keyof CommandMessageType>(
                   })
                   .setDescription(positional.missingErrorMessage)
               } else {
-                return positional.missingErrorMessage
+                // return positional.missingErrorMessage      TODO: Actuall fix problem, next 3 lines have been added manually
+                return new core.SafeMessageEmbed()
+                  .setColor("Red")
+                  .setDescription(`${positional.missingErrorMessage}`)
               }
             }
 

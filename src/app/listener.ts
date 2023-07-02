@@ -1,7 +1,7 @@
 import discord from "discord.js"
 import path from "path"
 import chalk from "chalk"
-import apiTypes from "discord-api-types/v8.js"
+// import apiTypes from "discord-api-types/v8.js"
 
 import * as handler from "@ghom/handler"
 import * as logger from "./logger.js"
@@ -36,7 +36,7 @@ listenerHandler.on("load", async (filepath) => {
 })
 
 export interface MoreClientEvents {
-  raw: [packet: apiTypes.GatewayDispatchPayload]
+  raw: [packet: discord.GatewayDispatchPayload]
 }
 
 export type AllClientEvents = discord.ClientEvents & MoreClientEvents

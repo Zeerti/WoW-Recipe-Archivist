@@ -33,7 +33,7 @@ export default new app.Command({
         : stderr.trim() || stdout || null
 
       const embed = new core.SafeMessageEmbed()
-        .setColor(err ? "RED" : "BLURPLE")
+        .setColor(err ? "Red" : "Blurple")
         .setTitle(
           err ? "\\❌ An error has occurred." : "\\✔ Successfully executed."
         )

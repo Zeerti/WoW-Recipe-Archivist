@@ -24,10 +24,11 @@ export default new app.Command({
           embeds: [
             new core.SafeMessageEmbed()
               .setColor("Red")
-              .setAuthor(
-                `Unknown command "${message.args.command}"`,
-                message.client.user?.displayAvatarURL()
-              ),
+              .setAuthor({
+                name: "ERROR BITCH",
+                url: `Unknown command "${message.args.command}"`,
+                iconURL: message.client.user?.displayAvatarURL()
+              }),
           ],
         })
       }
@@ -47,12 +48,14 @@ export default new app.Command({
           (page) => {
             return new app.SafeMessageEmbed()
               .setColor()
-              .setAuthor(
-                "Command list",
-                message.client.user?.displayAvatarURL()
+              .setAuthor({
+                name: "Command list",
+                url:message.client.user?.displayAvatarURL()}
               )
               .setDescription(page.join("\n"))
-              .setFooter(`${message.usedPrefix}help <command>`)
+              .setFooter({
+                text:`${message.usedPrefix}help <command>`
+              })
           }
         ),
         filter: (reaction, user) => user.id === message.author.id,

@@ -12,12 +12,12 @@ export type PaginatorKey = "previous" | "next" | "start" | "end"
 export type PaginatorEmojis = Record<PaginatorKey, string>
 export type PaginatorLabels = Record<PaginatorKey, string>
 
-export type Page = discord.MessageEmbed | string
+export type Page = discord.EmbedBuilder | string
 
 export interface PaginatorOptions {
   useReactions?: boolean
   useButtonLabels?: boolean
-  buttonStyle?: discord.MessageButtonStyleResolvable
+  buttonStyle?: discord.ButtonStyle
   channel: discord.TextBasedChannel
   filter?: (
     reaction: discord.MessageReaction | discord.PartialMessageReaction,
@@ -93,9 +93,9 @@ export abstract class Paginator {
       pageCount < 2
       ? undefined
       : [
-          new discord.MessageActionRow().addComponents(
+          new discord.ActionRowBuilder().addComponents(
             Paginator.keys.map((key) => {
-              const button = new discord.MessageButton()
+              const button = new discord.ButtonBuilder()
                 .setCustomId("pagination-" + key)
                 .setStyle(
                   this.options.buttonStyle ??

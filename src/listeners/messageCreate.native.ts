@@ -40,7 +40,7 @@ const listener: app.Listener<"messageCreate"> = {
       const m = await this.channel.send(sent)
       setTimeout(
         function (this: app.NormalMessage) {
-          if (!this.deleted) this.delete().catch()
+          if (!this.delete) this.delete().catch()
         }.bind(this),
         timeout
       )

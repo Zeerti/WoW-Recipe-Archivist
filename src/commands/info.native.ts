@@ -2,6 +2,7 @@ import * as app from "../app.js"
 
 import time from "tims"
 import * as core from "../app/core.js"
+import { ChannelType } from "../app.js"
 
 const conf = app.fetchPackageJson()
 
@@ -21,18 +22,17 @@ export default new app.Command({
       .setColor()
       .setAuthor(
         `Information about ${message.client.user.tag}`,
-        message.client.user?.displayAvatarURL({ dynamic: true })
+        message.client.user?.displayAvatarURL({ extension: "png" })
       )
       .setDescription(conf.description)
       .setTimestamp()
-      .addField(
-        conf.name,
-        app.code.stringify({
+      .addFields({
+        name: conf.name,
+        value: app.code.stringify({
           lang: "yml",
           content: [
-            `author: ${
-              message.client.users.cache.get(await app.getBotOwnerId(message))
-                ?.tag
+            `author: ${message.client.users.cache.get(await app.getBotOwnerId(message))
+              ?.tag
             }`,
             `uptime: ${time.duration(app.uptime(), {
               format: "second",
@@ -45,11 +45,11 @@ export default new app.Command({
             `database: ${app.db.client.constructor.name}`,
           ].join("\n"),
         }),
-        true
-      )
-      .addField(
-        "Cache",
-        app.code.stringify({
+        inline: true
+      })
+      .addFields({
+        name: "Cache",
+        value: app.code.stringify({
           lang: "yml",
           content: [
             `guilds: ${message.client.guilds.cache.size}`,
@@ -61,45 +61,45 @@ export default new app.Command({
             `messages: ${message.client.channels.cache.reduce(
               (acc, channel) => {
                 return (
-                  acc + (channel.isText() ? channel.messages.cache.size : 0)
+                  acc + (channel.type === ChannelType.GuildText ? channel.messages.cache.size : 0)
                 )
               },
               0
             )}`,
           ].join("\n"),
         }),
-        true
-      )
+        inline: true
+      })
     return message.channel.send({
       embeds: [
         !message.args.dependencies
           ? embed
           : embed
-              .addField("\u200B", "\u200B", false)
-              .addField(
-                "Dependencies",
-                app.code.stringify({
-                  lang: "yml",
-                  content: Object.entries(conf.dependencies)
-                    .map(([name, version]) => {
-                      return `${name.replace(/@/g, "")}: ${version}`
-                    })
-                    .join("\n"),
-                }),
-                true
-              )
-              .addField(
-                "Dev dependencies",
-                app.code.stringify({
-                  lang: "yml",
-                  content: Object.entries(conf.devDependencies)
-                    .map(([name, version]) => {
-                      return `${name.replace(/@/g, "")}: ${version}`
-                    })
-                    .join("\n"),
-                }),
-                true
-              ),
+            .addFields({name: "\u200B",value: "\u200B",inline: false})
+            .addFields({
+              name: "Dependencies",
+              value: app.code.stringify({
+                lang: "yml",
+                content: Object.entries(conf.dependencies)
+                  .map(([name, version]) => {
+                    return `${name.replace(/@/g, "")}: ${version}`
+                  })
+                  .join("\n"),
+              }),
+              inline: true
+            })
+            .addFields({
+              name: "Dev dependencies",
+              value: app.code.stringify({
+                lang: "yml",
+                content: Object.entries(conf.devDependencies)
+                  .map(([name, version]) => {
+                    return `${name.replace(/@/g, "")}: ${version}`
+                  })
+                  .join("\n"),
+              }),
+              inline: true
+            }),
       ],
     })
   },

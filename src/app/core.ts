@@ -252,91 +252,129 @@ export function formatEmbedText(
 }
 
 export class SafeMessageEmbed extends discord.EmbedBuilder {
-
-  public setFooter(options: discord.EmbedFooterData | null): this
-  public setFooter(text: string, iconURL?: string): this
-  public setFooter(
-    text: string | discord.EmbedFooterData | null,
-    iconURL?: string
-  ): this {
-    let options: discord.EmbedFooterData | null
-
-    if (typeof text === "string")
-      options = {
-        text,
-        iconURL,
-      }
-    else options = text
-
-    if (options?.text)
-      options.text = formatEmbedText(options.text, "footer.text")
-
-    super.setFooter(options)
-
-    return this
+  public setFooter(options: discord.EmbedFooterOptions): this {
+    super.setFooter(options);
+    return this;
   }
 
   setColor(color: discord.ColorResolvable | null = "Blurple"): this {
-  super.setColor(color)
-
-  return this
-}
-
-
-  // setColor(color: discord.ColorResolvable = "Blurple"): this {
-  //   super.setColor(color)
-
-  //   return this
-  // }
-
-  setTitle(title: string): this {
-    super.setTitle(formatEmbedText(title, "title"))
-
-    return this
+    super.setColor(color);
+    return this;
   }
 
-  public setAuthor(options: discord.EmbedAuthorData | null): this
-  public setAuthor(name: string, iconURL?: string, url?: string): this
-  public setAuthor(
-    name: string | discord.EmbedAuthorData | null,
-    iconURL?: string,
-    url?: string
-  ): this {
-    let options: discord.EmbedAuthorData | null
+  setTitle(title: string): this {
+    super.setTitle(formatEmbedText(title, "title"));
+    return this;
+  }
 
-    if (typeof name === "string")
-      options = {
-        name,
-        iconURL,
-        url,
-      }
-    else options = name
-
-    if (options?.name)
-      options.name = formatEmbedText(options.name, "author.name")
-
-    super.setAuthor(options)
-
-    return this
+  public setAuthor(options: discord.EmbedAuthorOptions): this {
+    super.setAuthor(options);
+    return this;
   }
 
   setFields(...fields: discord.EmbedField[]): this {
-    super.setFields([])
-    this.addFields(...fields)
-
-    return this
+    super.setFields([]);
+    this.addFields(...fields);
+    return this;
   }
 
   setDescription(description: string): this {
-    super.setDescription(formatEmbedText(description, "description"))
-
-    return this
+    super.setDescription(formatEmbedText(description, "description"));
+    return this;
   }
-  
+
   public addFields(...fields: discord.EmbedField[]): this {
-      super.addFields([...fields])
-
-    return this
+    super.addFields([...fields]);
+    return this;
   }
-
 }
+
+// export class SafeMessageEmbed extends discord.EmbedBuilder {
+
+//   public setFooter(options: discord.EmbedFooterData | null): this
+//   public setFooter(text: string, iconURL?: string): this
+//   public setFooter(
+//     text: string | discord.EmbedFooterData | null,
+//     iconURL?: string
+//   ): this {
+//     let options: discord.EmbedFooterData | null
+
+//     if (typeof text === "string")
+//       options = {
+//         text,
+//         iconURL,
+//       }
+//     else options = text
+
+//     if (options?.text)
+//       options.text = formatEmbedText(options.text, "footer.text")
+
+//     super.setFooter(options)
+
+//     return this
+//   }
+
+//   setColor(color: discord.ColorResolvable | null = "Blurple"): this {
+//   super.setColor(color)
+
+//   return this
+// }
+
+
+//   // setColor(color: discord.ColorResolvable = "Blurple"): this {
+//   //   super.setColor(color)
+
+//   //   return this
+//   // }
+
+//   setTitle(title: string): this {
+//     super.setTitle(formatEmbedText(title, "title"))
+
+//     return this
+//   }
+
+//   public setAuthor(options: discord.EmbedAuthorData | null): this
+//   public setAuthor(name: string, iconURL?: string, url?: string): this
+//   public setAuthor(
+//     name: string | discord.EmbedAuthorData | null,
+//     iconURL?: string,
+//     url?: string
+//   ): this {
+//     let options: discord.EmbedAuthorData | null
+
+//     if (typeof name === "string")
+//       options = {
+//         name,
+//         iconURL,
+//         url,
+//       }
+//     else options = name
+
+//     if (options?.name)
+//       options.name = formatEmbedText(options.name, "author.name")
+
+//     super.setAuthor(options)
+
+//     return this
+//   }
+
+//   setFields(...fields: discord.EmbedField[]): this {
+//     super.setFields([])
+//     this.addFields(...fields)
+
+//     return this
+//   }
+
+//   setDescription(description: string): this {
+//     super.setDescription(formatEmbedText(description, "description"))
+
+//     return this
+//   }
+  
+//   public addFields(...fields: discord.EmbedField[]): this {
+//       super.addFields([...fields])
+
+//     return this
+//   }
+
+// }
