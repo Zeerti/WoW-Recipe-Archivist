@@ -12,7 +12,8 @@ if (!fs.existsSync(dataDirectory)) fs.mkdirSync(dataDirectory)
 
 export interface Recipe {
   recipe_id: number
-  name: string
+  profession_id: number
+  name: string  
   link: string
 }
 
@@ -22,6 +23,7 @@ export default new app.Table<Recipe>({
   priority: 0,
   setup: (table) => {
     table.integer("recipe_id").primary()
+    table.integer("profession_id").notNullable().references("professions.profession_id")
     table.string("name").notNullable()
     table.string("link").notNullable()
   },
@@ -33,8 +35,9 @@ export default new app.Table<Recipe>({
     for await (const record of parser) {
       recipes.push({
         recipe_id: parseInt(record[0]),
-        name: record[1],
-        link: record[2],
+        profession_id: record[1],
+        name: record[2],
+        link: record[3],
       })
     }
     const chunkSize = 100
