@@ -180,10 +180,10 @@ export function forceTextSize(
 
 export interface EventEmitters {
   message:
-    | discord.TextBasedChannel
-    | discord.User
-    | discord.GuildMember
-    | discord.Guild
+  | discord.TextBasedChannel
+  | discord.User
+  | discord.GuildMember
+  | discord.Guild
 }
 
 export const messageEmitter = new EventEmitter()
