@@ -3,7 +3,7 @@ import * as app from "../app.js"
 export interface Character {
   character_id: number
   user_id: number
-  name: string
+  character_name: string
   profession_1: number
   profession_2?: number
   created_at: Date
@@ -18,7 +18,7 @@ export default new app.Table<Character>({
   setup: (table) => {
     table.integer("character_id").primary()
     table.integer("user_id").notNullable().references("users.user_id")
-    table.string("name").notNullable()
+    table.string("character_name").notNullable()
     table
       .integer("profession_1")
       .notNullable()
