@@ -10,9 +10,10 @@ const __filename = filename(import.meta)
 
 const listener: app.Listener<"ready"> = {
   event: "ready",
-  description: "Just log that bot is ready",
+  description: "Put slash commands to all guilds",
   once: true,
-  async run() {
+  async run(client) {
+    await app.deploySlashCommand(client)
     app.log(
       `Ok i'm ready! ${chalk.blue(
         "My default prefix is"

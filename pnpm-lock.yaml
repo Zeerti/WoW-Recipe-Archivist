@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@discordjs/builders':
+    specifier: ^1.6.3
+    version: 1.6.3
+  '@discordjs/rest':
+    specifier: ^1.7.1
+    version: 1.7.1
   '@ghom/handler':
     specifier: ^1.1.0
     version: 1.1.0
@@ -14,6 +20,9 @@ dependencies:
   chalk:
     specifier: ^5.0.1
     version: 5.0.1
+  cron:
+    specifier: ^2.0.0
+    version: 2.0.0
   csv-parse:
     specifier: ^5.4.0
     version: 5.4.0
@@ -58,6 +67,9 @@ dependencies:
     version: 21.0.1
 
 devDependencies:
+  '@types/cron':
+    specifier: ^2.0.0
+    version: 2.0.0
   '@types/fancy-log':
     specifier: ^2.0.0
     version: 2.0.0
@@ -91,6 +103,9 @@ devDependencies:
   del:
     specifier: ^6.1.1
     version: 6.1.1
+  discord-api-types:
+    specifier: ^0.36.1
+    version: 0.36.3
   esbuild:
     specifier: ^0.14.49
     version: 0.14.49
@@ -308,6 +323,13 @@ packages:
     dev: false
     optional: true
 
+  /@types/cron@2.0.0:
+    resolution: {integrity: sha512-xZM08fqvwIXgghtPVkSPKNgC+JoMQ2OHazEvyTKnNf7aWu1aB6/4lBbQFrb03Td2cUGG7ITzMv3mFYnMu6xRaQ==}
+    dependencies:
+      '@types/luxon': 3.3.0
+      '@types/node': 18.15.11
+    dev: true
+
   /@types/expect@1.20.4:
     resolution: {integrity: sha512-Q5Vn3yjTDyCMV50TB6VRIbQNxSE4OmZR86VSbGaNpfUolm0iePBB4KdEEHmxoY5sT2+2DIvXW0rvMDP2nHZ4Mg==}
     dev: true
@@ -333,6 +355,10 @@ packages:
     dependencies:
       '@types/node': 18.15.11
       '@types/vinyl': 2.0.7
+    dev: true
+
+  /@types/luxon@3.3.0:
+    resolution: {integrity: sha512-uKRI5QORDnrGFYgcdAVnHvEIvEZ8noTpP/Bg+HeUzZghwinDlIS87DEenV5r1YoOF9G4x600YsUXLWZ19rmTmg==}
     dev: true
 
   /@types/minimatch@3.0.5:
@@ -1050,6 +1076,12 @@ packages:
   /core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
     dev: true
+
+  /cron@2.0.0:
+    resolution: {integrity: sha512-RPeRunBCFr/WEo7WLp8Jnm45F/ziGJiHVvVQEBSDTSGu6uHW49b2FOP2O14DcXlGJRLhwE7TIoDzHHK4KmlL6g==}
+    dependencies:
+      luxon: 1.28.1
+    dev: false
 
   /cross-spawn@5.1.0:
     resolution: {integrity: sha512-pTgQJ5KC0d2hcY8eyL1IzlBPYjTkyH72XRZPnLyKus2mBfNjQs3klqbJU2VILqZryAZUt9JOb3h/mWMy23/f5A==}
@@ -2749,6 +2781,10 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+    dev: false
+
+  /luxon@1.28.1:
+    resolution: {integrity: sha512-gYHAa180mKrNIUJCbwpmD0aTu9kV0dREDrwNnuyFAsO1Wt0EVYSZelPnJlbj9HplzXX/YWXHFTL45kvZ53M0pw==}
     dev: false
 
   /make-bot.ts@2.5.8:
