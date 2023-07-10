@@ -4,18 +4,18 @@ import * as logger from "../app/logger.js"
 
 export interface Profession {
   profession_id: number
-  name: string
+  profession_name: string
 }
 
 const PROFESSION_LIST: Profession[] = [
-  { profession_id: 755, name: "jewelcrafting" },
-  { profession_id: 164, name: "blacksmithing" },
-  { profession_id: 165, name: "leatherworking" },
-  { profession_id: 197, name: "tailoring" },
-  { profession_id: 333, name: "enchanting" },
-  { profession_id: 202, name: "engineering" },
-  { profession_id: 171, name: "alchemy" },
-  { profession_id: 773, name: "inscription" },
+  { profession_id: 755, profession_name: "jewelcrafting" },
+  { profession_id: 164, profession_name: "blacksmithing" },
+  { profession_id: 165, profession_name: "leatherworking" },
+  { profession_id: 197, profession_name: "tailoring" },
+  { profession_id: 333, profession_name: "enchanting" },
+  { profession_id: 202, profession_name: "engineering" },
+  { profession_id: 171, profession_name: "alchemy" },
+  { profession_id: 773, profession_name: "inscription" },
 ]
 
 export default new app.Table<Profession>({
@@ -24,7 +24,7 @@ export default new app.Table<Profession>({
   priority: 0,
   setup: (table) => {
     table.integer("profession_id").primary()
-    table.string("name").notNullable()
+    table.string("profession_name").notNullable()
   },
   postSetup: async (query: Knex.QueryBuilder<Profession>) => {
     const results = await query
