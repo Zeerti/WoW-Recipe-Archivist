@@ -10,6 +10,7 @@ export default new app.Command({
   name: "create",
   description: "The create command",
   channelType: "all",
+  
   async run(message) {
     const characterList = await getCharactersByRecipeName("Primal Molten Breastplate")
     if (!characterList || !retrievedRecipe) return;
@@ -17,13 +18,12 @@ export default new app.Command({
     logger("Sending message")
     await message.channel.send({
       embeds: [
+        
         new core.SafeMessageEmbed()
-          .setColor("BLURPLE")
-          .setAuthor(
-            `Primal Molten Breastplate`
-          )
-          .addField("Character Name: ", characterList.map((character) => { return character.character_name }).join(", "), false)
-          .addField("Recipe Link: ", retrievedRecipe.link, false)
+          .setColor("Blurple")
+          .setAuthor({name: "Recipe", iconURL: "https://wow.zamimg.com/images/wow/icons/large/inv_knife_1h_primalistraid_d_02.jpg",  url: "https://www.wowhead.com/item=190495/primal-molten-breastplate" })
+          .addFields({name: "Character Name: ", value: characterList.map((character) => { return character.character_name }).join(", \n"), inline: false})
+          .addFields({name: "Recipe Link: ", value: retrievedRecipe.link, inline: false})  
       ],
     })
   },

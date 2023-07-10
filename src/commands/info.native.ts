@@ -20,10 +20,10 @@ export default new app.Command({
   async run(message) {
     const embed = new core.SafeMessageEmbed()
       .setColor()
-      .setAuthor(
-        `Information about ${message.client.user.tag}`,
-        message.client.user?.displayAvatarURL({ extension: "png" })
-      )
+      .setAuthor({
+        name: `Information about ${message.client.user.tag}`,
+        iconURL: message.client.user?.displayAvatarURL({ extension: "png" })
+      })
       .setDescription(conf.description)
       .setTimestamp()
       .addFields({
@@ -75,7 +75,7 @@ export default new app.Command({
         !message.args.dependencies
           ? embed
           : embed
-            .addFields({name: "\u200B",value: "\u200B",inline: false})
+            .addFields({ name: "\u200B", value: "\u200B", inline: false })
             .addFields({
               name: "Dependencies",
               value: app.code.stringify({

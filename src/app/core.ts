@@ -179,7 +179,7 @@ export function forceTextSize(
 }
 
 export interface EventEmitters {
-  message:
+  messageCreate:
   | discord.TextBasedChannel
   | discord.User
   | discord.GuildMember
